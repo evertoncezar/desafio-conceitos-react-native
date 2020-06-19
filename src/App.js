@@ -30,9 +30,8 @@ export default function App() {
     const retRepository = response.data;
 
     const newRepositories = repositories.map(repository => {
-      if (repository.id === id)
-      {
-        repository.likes = retRepository.likes; 
+      if (repository.id === id) {
+        repository.likes = retRepository.likes;
       }
       return repository;
     });
@@ -52,16 +51,17 @@ export default function App() {
             return (
               <View style={styles.repositoryContainer}>
                 <Text style={styles.repository}>{repository.title}</Text>
-
                 <View style={styles.techsContainer}>
-                  <Text style={styles.tech}>
-                    ReactJS
-                              </Text>
-                  <Text style={styles.tech}>
-                    Node.js
-                              </Text>
-                </View>
+                  {repository.techs.map(tech => {
+                    return (
 
+                      <Text key={tech} style={styles.tech}>
+                        {tech}
+                      </Text>
+
+                    );
+                  })}
+                </View>
                 <View style={styles.likesContainer}>
                   <Text
                     style={styles.likeText}
