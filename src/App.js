@@ -8,12 +8,15 @@ import {
   StatusBar,
   StyleSheet,
   TouchableOpacity,
-  RefreshControl
+  RefreshControl,
+  Image
 } from "react-native";
 
 import api from './services/api';
 
 export default function App() {
+
+ 
 
   const [repositories, setRepositories] = useState([]);
 
@@ -71,7 +74,21 @@ export default function App() {
           renderItem={({ item: repository }) => {
             return (
               <View style={styles.repositoryContainer}>
-                <Text style={styles.repository}>{repository.title}</Text>
+
+                <View style={styles.likesContainer}>
+                <Text style={styles.repository}>{repository.title}</Text> 
+                <View >
+                      <Image style={ styles.imageLike } source={{ uri: 'https://publicdomainvectors.org/photos/1425710397.png' }}/>
+                      
+                      <Text
+                        style={styles.likeText}
+                        testID={`repository-likes-${repository.id}`}
+                      >
+                    {`${repository.likes}`}
+                  </Text>
+                  </View>
+                </View>
+                
                 <View style={styles.techsContainer}>
                   {repository.techs.map(tech => {
                     return (
@@ -83,27 +100,21 @@ export default function App() {
                     );
                   })}
                 </View>
-                <View style={styles.likesContainer}>
-                  <Text
-                    style={styles.likeText}
-                    testID={`repository-likes-${repository.id}`}
-                  >
-                    {`${repository.likes} curtidas`}
-                  </Text>
-                </View>
-                <View style={styles.sepButton}>
+
+                <View style={styles.viewButton}>
+                <TouchableOpacity 
+                style={ styles.buttonContainer }
+                onPress={() => handleLikeRepository(repository.id)}
+                testID={`like-button-${repository.id}`}
+                >  
+                    <Image style={ styles.imageButton } source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQsOZyWXcA-JZXt2nF9CfkSrsYH_PU1mgDFbQ&usqp=CAU' }} />
+                </TouchableOpacity> 
                   <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => handleLikeRepository(repository.id)}
-                    testID={`like-button-${repository.id}`}
-                  >
-                    <Text style={styles.buttonText}>  Curtir  </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.button}
+                    style={styles.buttonContainer}
                     onPress={() => handleDeleteRepository(repository.id)}
                   >
-                    <Text style={styles.buttonText}>  Delete  </Text>
+                     <Image style={ styles.imageButton } source={{ uri: 'https://cdn.icon-icons.com/icons2/1150/PNG/512/1486504830-delete-dustbin-empty-recycle-recycling-remove-trash_81361.png' }} />
+                     
                   </TouchableOpacity>
                 </View>
 
@@ -128,7 +139,9 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   repository: {
+    flex: 1,
     fontSize: 32,
+    color: "#6687c4",
     fontWeight: "bold",
   },
   techsContainer: {
@@ -150,13 +163,22 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   likeText: {
-    fontSize: 14,
+    fontSize: 20,
+    color: "#6687c4",
     fontWeight: "bold",
-    marginRight: 10,
+    textAlign: "center",
+    
   },
-  sepButton: {
+  imageLike: {
+    height:48,
+    width: 48,
+    borderRadius: 48,
+    marginLeft: 5,
+  },
+  viewButton: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginTop: 15,
   },
   button: {
     marginTop: 10,
@@ -169,4 +191,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#7159c1",
     padding: 15,
   },
+  buttonContainer: {
+    height:48,
+    width: 48,
+    borderRadius: 48
+  },
+  imageButton: {
+    height:48,
+    width: 48,
+    borderRadius: 48
+  },
+
 });
